@@ -10,8 +10,8 @@ cache your prompts for later use. (works with everything except models that requ
 
 * nodes :
 -------------
-save-caching : connect it to clip text node to save it so you can load it next time with the load-caching.
-load-caching
-print-marker : mark a specific point in the workflow in terminal , set a message, clear screen, calculate time it took between points ... (and disable-enable cudnn)
-cudnn : simple way to disable-enable cudnn
-cudnn-advanced : advanced cudnn node with many settings
+* save-caching : connect it to clip text node to save it so you can load it next time with the load-caching.
+* load-caching
+* print-marker : mark a specific point in the workflow in terminal , set a message, clear screen, calculate time it took between points ... (and disable-enable cudnn)
+* cudnn : simple way to disable-enable cudnn
+* cudnn-advanced : advanced cudnn node with many settings
