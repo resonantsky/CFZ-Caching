@@ -16,12 +16,12 @@ NODE_CLASS_MAPPINGS = {
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "CFZ_save_conditioning": "CFZ Save Conditioning",
-    "CFZ_load_conditioning": "CFZ Load Conditioning",
-    "CFZ_PrintMarker": "CFZ Print Marker",
-    "CFZ_MIOpen_Profile": "CFZ MIOpen Profile",
-    "CFZ_MIOpen_Settings": "CFZ MIOpen Settings",
-    "CFZ_MIOpen_Solvers": "CFZ MIOpen Solvers",
-    "CFZ_MIOpen_Paths": "CFZ MIOpen Paths",
-    "CFZ_MIOpen_DBInfo": "CFZ MIOpen DB Info",
+    "CFZ_save_conditioning": "CeeTeeDee's Save Conditioning",
+    "CFZ_load_conditioning": "CeeTeeDee's Load Conditioning",
+    "CFZ_PrintMarker": "CeeTeeDee's Print Marker",
+    "CFZ_MIOpen_Profile": "CeeTeeDee's MIOpen Profile",
+    "CFZ_MIOpen_Settings": "CeeTeeDee's MIOpen Settings",
+    "CFZ_MIOpen_Solvers": "CeeTeeDee's MIOpen Solvers",
+    "CFZ_MIOpen_Paths": "CeeTeeDee's MIOpen Paths",
+    "CFZ_MIOpen_DBInfo": "CeeTeeDee's MIOpen DB Info",
 }

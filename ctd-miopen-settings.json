@@ -1,0 +1,256 @@
+{
+  "id": "cfz-miopen-settings-v1-0000-000000000000",
+  "revision": 0,
+  "last_node_id": 6,
+  "last_link_id": 3,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "Note",
+      "pos": [-20, -130],
+      "size": [1140, 100],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "text": "CeeTeeDee's MIOpen Settings\n\nChain 1 (left→right): Paths → Settings → DBInfo.  Chain 2: Profile → Solvers.\nSettings: toggle load_config_on_run to apply miopen_config.json; toggle save_config_on_run to persist widget state to disk.\nProfile+Solvers: pick arch preset in Profile, then fine-tune individual solvers.  Run both chains before any inference workflow."
+      },
+      "widgets_values": [
+        "CeeTeeDee's MIOpen Settings\n\nChain 1 (left→right): Paths → Settings → DBInfo.  Chain 2: Profile → Solvers.\nSettings: toggle load_config_on_run to apply miopen_config.json; toggle save_config_on_run to persist widget state to disk.\nProfile+Solvers: pick arch preset in Profile, then fine-tune individual solvers.  Run both chains before any inference workflow."
+      ]
+    },
+    {
+      "id": 2,
+      "type": "CFZ_MIOpen_Paths",
+      "pos": [-20, 0],
+      "size": [430, 210],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": [1],
+          "slot_index": 0
+        }
+      ],
+      "title": "CTD's MIOpen Paths",
+      "properties": {
+        "aux_id": "patientx/CFZ-Caching",
+        "Node name for S&R": "CFZ_MIOpen_Paths"
+      },
+      "widgets_values": [
+        "E:\\comfyui-rocm\\python_env\\Lib\\site-packages\\_rocm_sdk_devel\\bin",
+        "E:\\comfyui-rocm\\python_env\\Lib\\site-packages\\_rocm_sdk_devel\\bin\\rocblas\\library",
+        "E:\\comfyui-rocm\\models\\tunable",
+        "1073741824",
+        ""
+      ]
+    },
+    {
+      "id": 3,
+      "type": "CFZ_MIOpen_Settings",
+      "pos": [430, 0],
+      "size": [350, 490],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "trigger",
+          "type": "*",
+          "shape": 7,
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "info",
+          "type": "STRING",
+          "links": [],
+          "slot_index": 0
+        },
+        {
+          "name": "output",
+          "type": "*",
+          "links": [2],
+          "slot_index": 1
+        }
+      ],
+      "title": "CTD's MIOpen Settings",
+      "properties": {
+        "aux_id": "patientx/CFZ-Caching",
+        "Node name for S&R": "CFZ_MIOpen_Settings"
+      },
+      "widgets_values": [
+        false,
+        false,
+        false,
+        "rocBLAS",
+        false,
+        true,
+        false,
+        2,
+        1,
+        true,
+        false,
+        true,
+        true,
+        false,
+        false,
+        5,
+        true
+      ]
+    },
+    {
+      "id": 4,
+      "type": "CFZ_MIOpen_DBInfo",
+      "pos": [800, 0],
+      "size": [430, 340],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "trigger",
+          "type": "*",
+          "shape": 7,
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "name": "info",
+          "type": "STRING",
+          "links": [],
+          "slot_index": 0
+        }
+      ],
+      "title": "CTD's MIOpen DB Info",
+      "properties": {
+        "aux_id": "patientx/CFZ-Caching",
+        "Node name for S&R": "CFZ_MIOpen_DBInfo"
+      },
+      "widgets_values": [
+        ""
+      ]
+    },
+    {
+      "id": 5,
+      "type": "CFZ_MIOpen_Profile",
+      "pos": [-20, 560],
+      "size": [210, 80],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": [3],
+          "slot_index": 0
+        }
+      ],
+      "title": "CTD's MIOpen Profile",
+      "properties": {
+        "aux_id": "patientx/CFZ-Caching",
+        "Node name for S&R": "CFZ_MIOpen_Profile"
+      },
+      "widgets_values": [
+        "RDNA2"
+      ]
+    },
+    {
+      "id": 6,
+      "type": "CFZ_MIOpen_Solvers",
+      "pos": [210, 560],
+      "size": [350, 1076],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "trigger",
+          "type": "*",
+          "shape": 7,
+          "link": 3
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": [],
+          "slot_index": 0
+        }
+      ],
+      "title": "CTD's MIOpen Solvers",
+      "properties": {
+        "aux_id": "patientx/CFZ-Caching",
+        "Node name for S&R": "CFZ_MIOpen_Solvers"
+      },
+      "widgets_values": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        false,
+        false,
+        false
+      ]
+    }
+  ],
+  "links": [
+    [1, 2, 0, 3, 0, "*"],
+    [2, 3, 1, 4, 0, "*"],
+    [3, 5, 0, 6, 0, "*"]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.75,
+      "offset": [-80, -180]
+    },
+    "frontendVersion": "1.37.11",
+    "workflowRendererVersion": "LG"
+  },
+  "version": 0.4
+}
