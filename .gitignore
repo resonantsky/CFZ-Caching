@@ -2,3 +2,4 @@ __pycache__/
 *.pyc
 *.pyo
 miopen src/
+miopen_config.json

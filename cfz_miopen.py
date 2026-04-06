@@ -100,136 +100,7 @@ class AlwaysEqualProxy(str):
 
 any_type = AlwaysEqualProxy("*")
 
-# ---------------------------------------------------------------------------
-# Architecture profile data  (mirrors rocm_profiles.py)
-# Covers all solver vars exposed in SOLVER_GROUPS plus XDLOPS safety blocks.
-# ---------------------------------------------------------------------------
-
-_XDLOPS_OFF = {
-    "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM_ASM_FWD_GTC_XDLOPS":                                "0",
-    "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM_ASM_BWD_GTC_XDLOPS":                                "0",
-    "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM_ASM_WRW_GTC_XDLOPS":                                "0",
-    "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM_ASM_FWD_GTC_XDLOPS_NHWC":                          "0",
-    "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM_ASM_BWD_GTC_XDLOPS_NHWC":                          "0",
-    "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM_ASM_WRW_GTC_XDLOPS_NHWC":                          "0",
-    "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM_ASM_FWD_GTC_DLOPS_NCHWC":                          "0",
-    "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM_HIP_FWD_V4R4_XDLOPS":                              "0",
-    "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM_HIP_FWD_V4R5_XDLOPS":                              "0",
-    "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM_HIP_BWD_V1R1_XDLOPS":                              "0",
-    "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM_HIP_BWD_V4R1_XDLOPS":                              "0",
-    "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM_HIP_WRW_V4R4_XDLOPS":                              "0",
-    "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM_HIP_FWD_V4R4_PADDED_GEMM_XDLOPS":                 "0",
-    "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM_HIP_WRW_V4R4_PADDED_GEMM_XDLOPS":                 "0",
-    "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM_HIP_FWD_XDLOPS":                                   "0",
-    "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM_HIP_BWD_XDLOPS":                                   "0",
-    "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM_HIP_WRW_XDLOPS":                                   "0",
-    "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM_XDLOPS":                                            "0",
-    "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM_XDLOPS_EMULATE":                                   "0",
-    "MIOPEN_DEBUG_IMPLICIT_GEMM_XDLOPS_INLINE_ASM":                                     "0",
-    "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM_HIP_GROUP_BWD_XDLOPS":                             "0",
-    "MIOPEN_DEBUG_GROUP_CONV_IMPLICIT_GEMM_HIP_BWD_XDLOPS_AI_HEUR":                     "0",
-    "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM_FWD_V4R4_XDLOPS_ADD_VECTOR_LOAD_GEMMN_TUNE_PARAM": "0",
-    "MIOPEN_DEBUG_3D_CONV_IMPLICIT_GEMM_HIP_FWD_XDLOPS":                                "0",
-    "MIOPEN_DEBUG_3D_CONV_IMPLICIT_GEMM_HIP_BWD_XDLOPS":                                "0",
-    "MIOPEN_DEBUG_3D_CONV_IMPLICIT_GEMM_HIP_WRW_XDLOPS":                                "0",
-    "MIOPEN_DEBUG_CONV_CK_IGEMM_FWD_V6R1_DLOPS_NCHW":                                  "0",
-    "MIOPEN_DEBUG_CONV_CK_IGEMM_FWD_BIAS_ACTIV":                                        "0",
-    "MIOPEN_DEBUG_CONV_CK_IGEMM_FWD_BIAS_RES_ADD_ACTIV":                                "0",
-    "MIOPEN_DEBUG_CONV_MLIR_IGEMM_WRW_XDLOPS":                                          "0",
-    "MIOPEN_DEBUG_CONV_MLIR_IGEMM_BWD_XDLOPS":                                          "0",
-    "MIOPEN_DEBUG_AMD_MP_BD_WINOGRAD_F2X3":                                              "0",
-    "MIOPEN_DEBUG_AMD_MP_BD_WINOGRAD_F3X3":                                              "0",
-    "MIOPEN_DEBUG_AMD_MP_BD_WINOGRAD_F4X3":                                              "0",
-    "MIOPEN_DEBUG_AMD_MP_BD_WINOGRAD_F5X3":                                              "0",
-    "MIOPEN_DEBUG_AMD_MP_BD_WINOGRAD_F6X3":                                              "0",
-    "MIOPEN_DEBUG_AMD_MP_BD_XDLOPS_WINOGRAD_F2X3":                                      "0",
-    "MIOPEN_DEBUG_AMD_MP_BD_XDLOPS_WINOGRAD_F3X3":                                      "0",
-    "MIOPEN_DEBUG_AMD_MP_BD_XDLOPS_WINOGRAD_F4X3":                                      "0",
-    "MIOPEN_DEBUG_AMD_MP_BD_XDLOPS_WINOGRAD_F5X3":                                      "0",
-    "MIOPEN_DEBUG_AMD_MP_BD_XDLOPS_WINOGRAD_F6X3":                                      "0",
-}
-
-# RDNA2 — gfx1030 (RX 6000 series)
-_RDNA2_PROFILE = {
-    **_XDLOPS_OFF,
-    "MIOPEN_SEARCH_CUTOFF":                              "0",
-    "MIOPEN_DEBUG_CONVOLUTION_DETERMINISTIC":            "0",
-    # Algorithm enables
-    "MIOPEN_DEBUG_CONV_FFT":                             "1",
-    "MIOPEN_DEBUG_CONV_DIRECT":                          "1",
-    "MIOPEN_DEBUG_CONV_GEMM":                            "1",
-    "MIOPEN_DEBUG_CONV_WINOGRAD":                        "1",
-    "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM":                   "1",
-    # Immediate fallback
-    "MIOPEN_DEBUG_CONV_IMMED_FALLBACK":                  "1",
-    "MIOPEN_DEBUG_ENABLE_AI_IMMED_MODE_FALLBACK":        "1",
-    "MIOPEN_DEBUG_FORCE_IMMED_MODE_FALLBACK":            "0",
-    # Kernel backends
-    "MIOPEN_DEBUG_GCN_ASM_KERNELS":                      "1",
-    "MIOPEN_DEBUG_HIP_KERNELS":                          "1",
-    "MIOPEN_DEBUG_OPENCL_CONVOLUTIONS":                  "1",
-    "MIOPEN_DEBUG_OPENCL_WAVE64_NOWGP":                  "1",
-    "MIOPEN_DEBUG_ATTN_SOFTMAX":                         "1",
-    # Direct ASM
-    "MIOPEN_DEBUG_CONV_DIRECT_ASM_3X3U":                 "1",
-    "MIOPEN_DEBUG_CONV_DIRECT_ASM_1X1U":                 "1",
-    "MIOPEN_DEBUG_CONV_DIRECT_ASM_1X1UV2":               "1",
-    "MIOPEN_DEBUG_CONV_DIRECT_ASM_1X1U_SEARCH_OPTIMIZED": "1",
-    "MIOPEN_DEBUG_CONV_DIRECT_ASM_1X1U_AI_HEUR":         "1",
-    # Direct OCL
-    "MIOPEN_DEBUG_CONV_DIRECT_OCL_FWD":                  "1",
-    "MIOPEN_DEBUG_CONV_DIRECT_OCL_FWD1X1":               "1",
-    # Winograd
-    "MIOPEN_DEBUG_AMD_WINOGRAD_3X3":                     "1",
-    "MIOPEN_DEBUG_AMD_WINOGRAD_RXS":                     "1",
-    "MIOPEN_DEBUG_AMD_WINOGRAD_RXS_FWD_BWD":             "1",
-    "MIOPEN_DEBUG_AMD_WINOGRAD_RXS_F3X2":                "1",
-    "MIOPEN_DEBUG_AMD_WINOGRAD_RXS_F2X3":                "1",
-    "MIOPEN_DEBUG_AMD_WINOGRAD_RXS_F2X3_G1":             "1",
-    "MIOPEN_DEBUG_AMD_FUSED_WINOGRAD":                   "1",
-    "MIOPEN_DEBUG_AMD_WINOGRAD_FURY_RXS_F2X3":           "0",
-    "MIOPEN_DEBUG_AMD_WINOGRAD_FURY_RXS_F3X2":           "0",
-    "MIOPEN_DEBUG_AMD_WINOGRAD_RAGE_RXS_F2X3":           "0",
-    # Multi-pass Winograd (RDNA2: F3x2/F3x3 only)
-    "MIOPEN_DEBUG_AMD_WINOGRAD_MPASS_F3X2":              "1",
-    "MIOPEN_DEBUG_AMD_WINOGRAD_MPASS_F3X3":              "1",
-    # Implicit GEMM (forward-only, non-XDLOPS)
-    "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM_ASM_FWD_V4R1":      "1",
-    "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM_ASM_FWD_V4R1_1X1":  "1",
-    "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM_HIP_FWD_V4R1":      "1",
-    "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM_HIP_FWD_V4R4":      "1",
-    # Group Conv / CK — RDNA3/4+ only
-    "MIOPEN_DEBUG_GROUP_CONV_IMPLICIT_GEMM_HIP_FWD_XDLOPS":         "0",
-    "MIOPEN_DEBUG_GROUP_CONV_IMPLICIT_GEMM_HIP_FWD_XDLOPS_AI_HEUR": "0",
-    "MIOPEN_DEBUG_CK_DEFAULT_KERNELS":                               "0",
-}
-
-# RDNA3 — gfx1100 (RX 7000 series): adds Fury Winograd + wider MPASS + CK
-_RDNA3_PROFILE = {
-    **_RDNA2_PROFILE,
-    "MIOPEN_DEBUG_AMD_WINOGRAD_FURY_RXS_F2X3":                      "1",
-    "MIOPEN_DEBUG_AMD_WINOGRAD_FURY_RXS_F3X2":                      "1",
-    "MIOPEN_DEBUG_AMD_WINOGRAD_MPASS_F3X4":                         "1",
-    "MIOPEN_DEBUG_GROUP_CONV_IMPLICIT_GEMM_HIP_FWD_XDLOPS":         "1",
-    "MIOPEN_DEBUG_GROUP_CONV_IMPLICIT_GEMM_HIP_FWD_XDLOPS_AI_HEUR": "1",
-    "MIOPEN_DEBUG_CK_DEFAULT_KERNELS":                               "1",
-}
-
-# RDNA4 — gfx1200 (RX 9000 series): adds Rage Winograd + wider MPASS
-_RDNA4_PROFILE = {
-    **_RDNA3_PROFILE,
-    "MIOPEN_DEBUG_AMD_WINOGRAD_RAGE_RXS_F2X3": "1",
-    "MIOPEN_DEBUG_AMD_WINOGRAD_MPASS_F3X5":    "1",
-}
-
-_PROFILES = {
-    "RDNA2": _RDNA2_PROFILE,
-    "RDNA3": _RDNA3_PROFILE,
-    "RDNA4": _RDNA4_PROFILE,
-}
-
 # Vars that must never be set — dtype-corrupting or config strings, not booleans.
-# (mirrors rocm_mgr.py _UNSET_VARS + relevant _EXTRA_CLEAR_VARS)
 _UNSAFE_VARS = {
     "MIOPEN_DEBUG_CONVOLUTION_ATTRIB_FP16_ALT_IMPL",
     "MIOPEN_CONVOLUTION_ATTRIB_FP16_ALT_IMPL",
@@ -240,51 +111,6 @@ _UNSAFE_VARS = {
     "HIP_PATH",
     "HIP_PATH_71",
 }
-
-
-# ---------------------------------------------------------------------------
-# CFZ_MIOpen_Profile — architecture preset (RDNA2 / RDNA3 / RDNA4)
-# ---------------------------------------------------------------------------
-
-class CFZ_MIOpen_Profile:
-    """Apply an architecture-specific MIOpen solver preset.
-
-    Sets all relevant environment variables for the selected GPU generation.
-    Chain CFZ_MIOpen_Solvers after this node to override individual solvers."""
-
-    @classmethod
-    def INPUT_TYPES(cls):
-        return {
-            "required": {
-                "arch": (["RDNA2", "RDNA3", "RDNA4"],),
-            },
-            "optional": {
-                "trigger": (any_type, {}),
-            },
-        }
-
-    RETURN_TYPES = (any_type,)
-    RETURN_NAMES = ("output",)
-    OUTPUT_NODE = True
-    FUNCTION = "run"
-    CATEGORY = "CFZ Utils/MIOpen"
-
-    def run(self, arch, trigger=None):
-        profile = _PROFILES[arch]
-        for var in _UNSAFE_VARS:
-            os.environ.pop(var, None)
-        for var, val in profile.items():
-            if val == "":
-                os.environ.pop(var, None)
-            else:
-                os.environ[var] = val
-        applied = sum(1 for v in profile.values() if v != "")
-        logging.info(f"[CFZ MIOpen Profile] {arch}: {applied} vars applied")
-        return (trigger,)
-
-    @classmethod
-    def IS_CHANGED(cls, **kwargs):
-        return float("NaN")
 
 
 # ---------------------------------------------------------------------------
@@ -301,25 +127,35 @@ class CFZ_MIOpen_Settings:
 
     @classmethod
     def INPUT_TYPES(cls):
+        cfg = _read_config()
+        def _b(key, fallback):
+            return cfg.get(key, "1" if fallback else "0") == "1"
+        def _i(key, fallback):
+            try:
+                return int(cfg.get(key, fallback))
+            except (ValueError, TypeError):
+                return fallback
+        gemm_raw = cfg.get("MIOPEN_GEMM_ENFORCE_BACKEND", "1")
+        gemm_choices = ["hipBLASLt", "rocBLAS"] if gemm_raw == "5" else ["rocBLAS", "hipBLASLt"]
         return {
             "required": {
                 "load_config_on_run":                  ("BOOLEAN", {"default": False}),
                 "save_config_on_run":                  ("BOOLEAN", {"default": False}),
                 "delete_saved_config":                 ("BOOLEAN", {"default": False}),
-                "gemm_backend":                        (["rocBLAS", "hipBLASLt"],),
-                "pytorch_rocm_use_rocblas":             ("BOOLEAN", {"default": False}),
-                "pytorch_hipblaslt_disable":            ("BOOLEAN", {"default": True}),
-                "rocblas_use_hipblaslt":                ("BOOLEAN", {"default": False}),
-                "miopen_find_mode":                     ("INT",     {"default": 2, "min": 1, "max": 7, "step": 1}),
-                "miopen_find_enforce":                  ("INT",     {"default": 1, "min": 1, "max": 5, "step": 1}),
-                "miopen_search_cutoff":                 ("BOOLEAN", {"default": False}),
-                "miopen_deterministic_conv":            ("BOOLEAN", {"default": False}),
-                "rocblas_stream_order_alloc":           ("BOOLEAN", {"default": True}),
-                "rocblas_default_atomics_mode":         ("BOOLEAN", {"default": True}),
-                "pytorch_tunableop_rocblas_enabled":    ("BOOLEAN", {"default": False}),
-                "pytorch_tunableop_hipblaslt_enabled":  ("BOOLEAN", {"default": False}),
-                "miopen_log_level":                     ("INT",     {"default": 0, "min": 0, "max": 7, "step": 1}),
-                "miopen_debug_enable":                  ("BOOLEAN", {"default": False}),
+                "gemm_backend":                        (gemm_choices,),
+                "pytorch_rocm_use_rocblas":             ("BOOLEAN", {"default": _b("PYTORCH_ROCM_USE_ROCBLAS",               False)}),
+                "pytorch_hipblaslt_disable":            ("BOOLEAN", {"default": _b("PYTORCH_HIPBLASLT_DISABLE",              True)}),
+                "rocblas_use_hipblaslt":                ("BOOLEAN", {"default": _b("ROCBLAS_USE_HIPBLASLT",                  False)}),
+                "miopen_find_mode":                     ("INT",     {"default": _i("MIOPEN_FIND_MODE",    2), "min": 1, "max": 7, "step": 1}),
+                "miopen_find_enforce":                  ("INT",     {"default": _i("MIOPEN_FIND_ENFORCE", 1), "min": 1, "max": 5, "step": 1}),
+                "miopen_search_cutoff":                 ("BOOLEAN", {"default": _b("MIOPEN_SEARCH_CUTOFF",                   False)}),
+                "miopen_deterministic_conv":            ("BOOLEAN", {"default": _b("MIOPEN_DEBUG_CONVOLUTION_DETERMINISTIC",  False)}),
+                "rocblas_stream_order_alloc":           ("BOOLEAN", {"default": _b("ROCBLAS_STREAM_ORDER_ALLOC",              True)}),
+                "rocblas_default_atomics_mode":         ("BOOLEAN", {"default": _b("ROCBLAS_DEFAULT_ATOMICS_MODE",            True)}),
+                "pytorch_tunableop_rocblas_enabled":    ("BOOLEAN", {"default": _b("PYTORCH_TUNABLEOP_ROCBLAS_ENABLED",       False)}),
+                "pytorch_tunableop_hipblaslt_enabled":  ("BOOLEAN", {"default": _b("PYTORCH_TUNABLEOP_HIPBLASLT_ENABLED",     False)}),
+                "miopen_log_level":                     ("INT",     {"default": _i("MIOPEN_LOG_LEVEL",    0), "min": 0, "max": 7, "step": 1}),
+                "miopen_debug_enable":                  ("BOOLEAN", {"default": _b("MIOPEN_DEBUG_ENABLE",                     False)}),
             },
             "optional": {
                 "trigger": (any_type, {}),
@@ -449,102 +285,116 @@ class CFZ_MIOpen_Settings:
 
 
 # ---------------------------------------------------------------------------
-# CFZ_MIOpen_Solvers — per-solver enable/disable
+# Solver node base — shared logic for all per-group solver nodes
 # ---------------------------------------------------------------------------
 
-class CFZ_MIOpen_Solvers:
-    """Enable or disable individual MIOpen solvers.
+def _make_solver_node(class_name: str, display_title: str, solver_map: tuple):
+    """Factory that returns a solver node class for one solver group."""
 
-    Groups and ordering mirror the rocm_ext.py SOLVER_GROUPS layout.
-    Defaults match the RDNA2 inference-safe profile.
-    Use CFZ_MIOpen_Profile first for a full arch preset, then chain this
-    node to override specific solvers."""
+    def _input_types(cls):
+        cfg = _read_config()
+        required = {}
+        for param, env_var, default in solver_map:
+            val = (cfg[env_var] == "1") if env_var in cfg else default
+            required[param] = ("BOOLEAN", {"default": val})
+        return {"required": required, "optional": {"trigger": (any_type, {})}}
 
-    # (param_name, env_var, inference_default)
-    _SOLVER_MAP = (
-        # Algorithm / Solver Group Enables
-        ("conv_fft",               "MIOPEN_DEBUG_CONV_FFT",               True),
-        ("conv_direct",            "MIOPEN_DEBUG_CONV_DIRECT",            True),
-        ("conv_gemm",              "MIOPEN_DEBUG_CONV_GEMM",              True),
-        ("conv_winograd",          "MIOPEN_DEBUG_CONV_WINOGRAD",          True),
-        ("conv_implicit_gemm",     "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM",     True),
-        # Immediate Fallback Mode
-        ("conv_immed_fallback",    "MIOPEN_DEBUG_CONV_IMMED_FALLBACK",                  True),
-        ("ai_immed_fallback",      "MIOPEN_DEBUG_ENABLE_AI_IMMED_MODE_FALLBACK",        True),
-        ("force_immed_fallback",   "MIOPEN_DEBUG_FORCE_IMMED_MODE_FALLBACK",            False),
-        # Build Method Toggles
-        ("gcn_asm_kernels",        "MIOPEN_DEBUG_GCN_ASM_KERNELS",        True),
-        ("hip_kernels",            "MIOPEN_DEBUG_HIP_KERNELS",            True),
-        ("opencl_convolutions",    "MIOPEN_DEBUG_OPENCL_CONVOLUTIONS",    True),
-        ("opencl_wave64_nowgp",    "MIOPEN_DEBUG_OPENCL_WAVE64_NOWGP",    True),
-        ("attn_softmax",           "MIOPEN_DEBUG_ATTN_SOFTMAX",           True),
-        # Direct ASM Solver Toggles
-        ("direct_asm_3x3u",        "MIOPEN_DEBUG_CONV_DIRECT_ASM_3X3U",                  True),
-        ("direct_asm_1x1u",        "MIOPEN_DEBUG_CONV_DIRECT_ASM_1X1U",                  True),
-        ("direct_asm_1x1uv2",      "MIOPEN_DEBUG_CONV_DIRECT_ASM_1X1UV2",                True),
-        ("direct_asm_1x1u_search", "MIOPEN_DEBUG_CONV_DIRECT_ASM_1X1U_SEARCH_OPTIMIZED", True),
-        ("direct_asm_1x1u_ai",     "MIOPEN_DEBUG_CONV_DIRECT_ASM_1X1U_AI_HEUR",          True),
-        # Direct OpenCL Solver Toggles
-        ("direct_ocl_fwd",         "MIOPEN_DEBUG_CONV_DIRECT_OCL_FWD",    True),
-        ("direct_ocl_fwd1x1",      "MIOPEN_DEBUG_CONV_DIRECT_OCL_FWD1X1", True),
-        # Winograd Solver Toggles
-        ("winograd_3x3",           "MIOPEN_DEBUG_AMD_WINOGRAD_3X3",               True),
-        ("winograd_rxs",           "MIOPEN_DEBUG_AMD_WINOGRAD_RXS",               True),
-        ("winograd_rxs_fwdbwd",    "MIOPEN_DEBUG_AMD_WINOGRAD_RXS_FWD_BWD",       True),
-        ("winograd_rxs_f3x2",      "MIOPEN_DEBUG_AMD_WINOGRAD_RXS_F3X2",          True),
-        ("winograd_rxs_f2x3",      "MIOPEN_DEBUG_AMD_WINOGRAD_RXS_F2X3",          True),
-        ("winograd_rxs_f2x3_g1",   "MIOPEN_DEBUG_AMD_WINOGRAD_RXS_F2X3_G1",       True),
-        ("winograd_fused",         "MIOPEN_DEBUG_AMD_FUSED_WINOGRAD",             True),
-        ("winograd_fury_f2x3",     "MIOPEN_DEBUG_AMD_WINOGRAD_FURY_RXS_F2X3",     False),
-        ("winograd_fury_f3x2",     "MIOPEN_DEBUG_AMD_WINOGRAD_FURY_RXS_F3X2",     False),
-        ("winograd_rage_f2x3",     "MIOPEN_DEBUG_AMD_WINOGRAD_RAGE_RXS_F2X3",     False),
-        # Multi-pass Winograd Toggles
-        ("mpass_f3x2",             "MIOPEN_DEBUG_AMD_WINOGRAD_MPASS_F3X2", True),
-        ("mpass_f3x3",             "MIOPEN_DEBUG_AMD_WINOGRAD_MPASS_F3X3", True),
-        # Implicit GEMM Toggles
-        ("igemm_asm_v4r1",         "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM_ASM_FWD_V4R1",      True),
-        ("igemm_asm_v4r1_1x1",     "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM_ASM_FWD_V4R1_1X1",  True),
-        ("igemm_hip_v4r1",         "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM_HIP_FWD_V4R1",      True),
-        ("igemm_hip_v4r4",         "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM_HIP_FWD_V4R4",      True),
-        # Group Conv / CK Toggles (RDNA3/4+ only)
-        ("group_conv_xdlops",      "MIOPEN_DEBUG_GROUP_CONV_IMPLICIT_GEMM_HIP_FWD_XDLOPS",         False),
-        ("group_conv_xdlops_ai",   "MIOPEN_DEBUG_GROUP_CONV_IMPLICIT_GEMM_HIP_FWD_XDLOPS_AI_HEUR", False),
-        ("ck_default_kernels",     "MIOPEN_DEBUG_CK_DEFAULT_KERNELS",                               False),
-    )
-
-    @classmethod
-    def INPUT_TYPES(cls):
-        required = {
-            param: ("BOOLEAN", {"default": default})
-            for param, _env, default in cls._SOLVER_MAP
-        }
-        return {
-            "required": required,
-            "optional": {"trigger": (any_type, {})},
-        }
-
-    RETURN_TYPES = (any_type,)
-    RETURN_NAMES = ("output",)
-    OUTPUT_NODE = True
-    FUNCTION = "run"
-    CATEGORY = "CFZ Utils/MIOpen"
-
-    def run(self, **kwargs):
+    def _run(self, **kwargs):
         trigger = kwargs.pop("trigger", None)
         on, off = 0, 0
-        for param, env_var, _default in self._SOLVER_MAP:
+        for param, env_var, _default in solver_map:
             val = kwargs.get(param, _default)
             os.environ[env_var] = "1" if val else "0"
-            if val:
-                on += 1
-            else:
-                off += 1
-        logging.info(f"[CFZ MIOpen Solvers] {on} enabled, {off} disabled")
+            if val: on += 1
+            else:   off += 1
+        logging.info(f"[{class_name}] {on} enabled, {off} disabled")
         return (trigger,)
 
-    @classmethod
-    def IS_CHANGED(cls, **kwargs):
-        return float("NaN")
+    return type(class_name, (), {
+        "_SOLVER_MAP":    solver_map,
+        "INPUT_TYPES":    classmethod(_input_types),
+        "RETURN_TYPES":   (any_type,),
+        "RETURN_NAMES":   ("output",),
+        "OUTPUT_NODE":    True,
+        "FUNCTION":       "run",
+        "CATEGORY":       "CFZ Utils/MIOpen/Solvers",
+        "run":            _run,
+        "IS_CHANGED":     classmethod(lambda cls, **kw: float("NaN")),
+    })
+
+
+# All solver tuples in one place — referenced by group nodes and _MANAGED_VARS
+_SOLVERS_ALGO = (
+    ("conv_fft",           "MIOPEN_DEBUG_CONV_FFT",           True),
+    ("conv_direct",        "MIOPEN_DEBUG_CONV_DIRECT",        True),
+    ("conv_gemm",          "MIOPEN_DEBUG_CONV_GEMM",          True),
+    ("conv_winograd",      "MIOPEN_DEBUG_CONV_WINOGRAD",      True),
+    ("conv_implicit_gemm", "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM", True),
+)
+_SOLVERS_FALLBACK = (
+    ("conv_immed_fallback",  "MIOPEN_DEBUG_CONV_IMMED_FALLBACK",             True),
+    ("ai_immed_fallback",    "MIOPEN_DEBUG_ENABLE_AI_IMMED_MODE_FALLBACK",   True),
+    ("force_immed_fallback", "MIOPEN_DEBUG_FORCE_IMMED_MODE_FALLBACK",       False),
+)
+_SOLVERS_BUILD = (
+    ("gcn_asm_kernels",     "MIOPEN_DEBUG_GCN_ASM_KERNELS",      True),
+    ("hip_kernels",         "MIOPEN_DEBUG_HIP_KERNELS",          True),
+    ("opencl_convolutions", "MIOPEN_DEBUG_OPENCL_CONVOLUTIONS",  True),
+    ("opencl_wave64_nowgp", "MIOPEN_DEBUG_OPENCL_WAVE64_NOWGP",  True),
+    ("attn_softmax",        "MIOPEN_DEBUG_ATTN_SOFTMAX",         True),
+)
+_SOLVERS_DIRECT_ASM = (
+    ("direct_asm_3x3u",        "MIOPEN_DEBUG_CONV_DIRECT_ASM_3X3U",                  True),
+    ("direct_asm_1x1u",        "MIOPEN_DEBUG_CONV_DIRECT_ASM_1X1U",                  True),
+    ("direct_asm_1x1uv2",      "MIOPEN_DEBUG_CONV_DIRECT_ASM_1X1UV2",                True),
+    ("direct_asm_1x1u_search", "MIOPEN_DEBUG_CONV_DIRECT_ASM_1X1U_SEARCH_OPTIMIZED", True),
+    ("direct_asm_1x1u_ai",     "MIOPEN_DEBUG_CONV_DIRECT_ASM_1X1U_AI_HEUR",          True),
+)
+_SOLVERS_DIRECT_OCL = (
+    ("direct_ocl_fwd",    "MIOPEN_DEBUG_CONV_DIRECT_OCL_FWD",    True),
+    ("direct_ocl_fwd1x1", "MIOPEN_DEBUG_CONV_DIRECT_OCL_FWD1X1", True),
+)
+_SOLVERS_WINOGRAD = (
+    ("winograd_3x3",        "MIOPEN_DEBUG_AMD_WINOGRAD_3X3",           True),
+    ("winograd_rxs",        "MIOPEN_DEBUG_AMD_WINOGRAD_RXS",           True),
+    ("winograd_rxs_fwdbwd", "MIOPEN_DEBUG_AMD_WINOGRAD_RXS_FWD_BWD",   True),
+    ("winograd_rxs_f3x2",   "MIOPEN_DEBUG_AMD_WINOGRAD_RXS_F3X2",      True),
+    ("winograd_rxs_f2x3",   "MIOPEN_DEBUG_AMD_WINOGRAD_RXS_F2X3",      True),
+    ("winograd_rxs_f2x3_g1","MIOPEN_DEBUG_AMD_WINOGRAD_RXS_F2X3_G1",   True),
+    ("winograd_fused",      "MIOPEN_DEBUG_AMD_FUSED_WINOGRAD",         True),
+    ("winograd_fury_f2x3",  "MIOPEN_DEBUG_AMD_WINOGRAD_FURY_RXS_F2X3", False),
+    ("winograd_fury_f3x2",  "MIOPEN_DEBUG_AMD_WINOGRAD_FURY_RXS_F3X2", False),
+    ("winograd_rage_f2x3",  "MIOPEN_DEBUG_AMD_WINOGRAD_RAGE_RXS_F2X3", False),
+    ("mpass_f3x2",          "MIOPEN_DEBUG_AMD_WINOGRAD_MPASS_F3X2",    True),
+    ("mpass_f3x3",          "MIOPEN_DEBUG_AMD_WINOGRAD_MPASS_F3X3",    True),
+)
+_SOLVERS_IGEMM = (
+    ("igemm_asm_v4r1",     "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM_ASM_FWD_V4R1",     True),
+    ("igemm_asm_v4r1_1x1", "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM_ASM_FWD_V4R1_1X1", True),
+    ("igemm_hip_v4r1",     "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM_HIP_FWD_V4R1",     True),
+    ("igemm_hip_v4r4",     "MIOPEN_DEBUG_CONV_IMPLICIT_GEMM_HIP_FWD_V4R4",     True),
+)
+_SOLVERS_CK = (
+    ("group_conv_xdlops",    "MIOPEN_DEBUG_GROUP_CONV_IMPLICIT_GEMM_HIP_FWD_XDLOPS",         False),
+    ("group_conv_xdlops_ai", "MIOPEN_DEBUG_GROUP_CONV_IMPLICIT_GEMM_HIP_FWD_XDLOPS_AI_HEUR", False),
+    ("ck_default_kernels",   "MIOPEN_DEBUG_CK_DEFAULT_KERNELS",                               False),
+)
+
+# All solver tuples flat — used by _MANAGED_VARS
+_ALL_SOLVER_TUPLES = (
+    _SOLVERS_ALGO + _SOLVERS_FALLBACK + _SOLVERS_BUILD +
+    _SOLVERS_DIRECT_ASM + _SOLVERS_DIRECT_OCL +
+    _SOLVERS_WINOGRAD + _SOLVERS_IGEMM + _SOLVERS_CK
+)
+
+CFZ_MIOpen_Solvers          = _make_solver_node("CFZ_MIOpen_Solvers",          "Algorithm / Solver Groups",       _SOLVERS_ALGO)
+CFZ_MIOpen_SolversFallback  = _make_solver_node("CFZ_MIOpen_SolversFallback",  "Immediate Fallback Mode",         _SOLVERS_FALLBACK)
+CFZ_MIOpen_SolversBuild     = _make_solver_node("CFZ_MIOpen_SolversBuild",     "Build Method Toggles",            _SOLVERS_BUILD)
+CFZ_MIOpen_SolversDirectASM = _make_solver_node("CFZ_MIOpen_SolversDirectASM", "Direct ASM Solver Toggles",       _SOLVERS_DIRECT_ASM)
+CFZ_MIOpen_SolversDirectOCL = _make_solver_node("CFZ_MIOpen_SolversDirectOCL", "Direct OpenCL Solver Toggles",    _SOLVERS_DIRECT_OCL)
+CFZ_MIOpen_SolversWinograd  = _make_solver_node("CFZ_MIOpen_SolversWinograd",  "Winograd + Multi-pass Toggles",   _SOLVERS_WINOGRAD)
+CFZ_MIOpen_SolversIGEMM     = _make_solver_node("CFZ_MIOpen_SolversIGEMM",     "Implicit GEMM Toggles",           _SOLVERS_IGEMM)
+CFZ_MIOpen_SolversCK        = _make_solver_node("CFZ_MIOpen_SolversCK",        "Group Conv / CK (RDNA3/4+ only)", _SOLVERS_CK)
 
 
 # ---------------------------------------------------------------------------
@@ -564,13 +414,16 @@ class CFZ_MIOpen_Paths:
 
     @classmethod
     def INPUT_TYPES(cls):
+        cfg = _read_config()
+        def _s(key, fallback):
+            return cfg.get(key, fallback)
         return {
             "required": {
-                "miopen_system_db_path":            ("STRING", {"default": _expand_vars(_VENV_DEFAULT_DB),      "multiline": False}),
-                "rocblas_tensile_libpath":           ("STRING", {"default": _expand_vars(_VENV_DEFAULT_RBLAS),   "multiline": False}),
-                "pytorch_tunableop_cache_dir":       ("STRING", {"default": _expand_vars(_ROOT_DEFAULT_TUNABLE), "multiline": False}),
-                "miopen_convolution_max_workspace":  ("STRING", {"default": "1073741824",           "multiline": False}),
-                "rocblas_device_memory_size":        ("STRING", {"default": "",                     "multiline": False}),
+                "miopen_system_db_path":            ("STRING", {"default": _s("MIOPEN_SYSTEM_DB_PATH",            _expand_vars(_VENV_DEFAULT_DB)),      "multiline": False}),
+                "rocblas_tensile_libpath":           ("STRING", {"default": _s("ROCBLAS_TENSILE_LIBPATH",          _expand_vars(_VENV_DEFAULT_RBLAS)),   "multiline": False}),
+                "pytorch_tunableop_cache_dir":       ("STRING", {"default": _s("PYTORCH_TUNABLEOP_CACHE_DIR",      _expand_vars(_ROOT_DEFAULT_TUNABLE)), "multiline": False}),
+                "miopen_convolution_max_workspace":  ("STRING", {"default": _s("MIOPEN_CONVOLUTION_MAX_WORKSPACE", "1073741824"),                        "multiline": False}),
+                "rocblas_device_memory_size":        ("STRING", {"default": _s("ROCBLAS_DEVICE_MEMORY_SIZE",       ""),                                  "multiline": False}),
             },
             "optional": {
                 "trigger": (any_type, {}),
@@ -777,7 +630,7 @@ _MANAGED_VARS: list = [
     "PYTORCH_TUNABLEOP_HIPBLASLT_ENABLED",
     "MIOPEN_LOG_LEVEL",
     "MIOPEN_DEBUG_ENABLE",
-] + [env_var for _, env_var, _ in CFZ_MIOpen_Solvers._SOLVER_MAP]
+] + [env_var for _, env_var, _ in _ALL_SOLVER_TUPLES]
 
 
 def _read_config() -> dict:
