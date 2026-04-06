@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 import re
 import sys
@@ -278,7 +279,7 @@ class CFZ_MIOpen_Profile:
             else:
                 os.environ[var] = val
         applied = sum(1 for v in profile.values() if v != "")
-        print(f"[CFZ MIOpen Profile] {arch}: {applied} vars applied")
+        logging.info(f"[CFZ MIOpen Profile] {arch}: {applied} vars applied")
         return (trigger,)
 
     @classmethod
@@ -389,9 +390,9 @@ class CFZ_MIOpen_Settings:
         if delete_saved_config:
             if _CONFIG_PATH.exists():
                 _CONFIG_PATH.unlink()
-                print(f"[CFZ MIOpen Settings] Deleted saved config: {_CONFIG_PATH}")
+                logging.info(f"[CFZ MIOpen Settings] Deleted saved config: {_CONFIG_PATH}")
             else:
-                print(f"[CFZ MIOpen Settings] No saved config to delete at {_CONFIG_PATH}")
+                logging.info(f"[CFZ MIOpen Settings] No saved config to delete at {_CONFIG_PATH}")
 
         # Load from JSON or apply widget values
         using_saved = False
@@ -399,10 +400,10 @@ class CFZ_MIOpen_Settings:
             cfg = _read_config()
             if cfg:
                 count = _apply_config(cfg)
-                print(f"[CFZ MIOpen Settings] Loaded {count} var(s) from {_CONFIG_PATH}")
+                logging.info(f"[CFZ MIOpen Settings] Loaded {count} var(s) from {_CONFIG_PATH}")
                 using_saved = True
             else:
-                print(f"[CFZ MIOpen Settings] No saved config at {_CONFIG_PATH} — applying widget values")
+                logging.info(f"[CFZ MIOpen Settings] No saved config at {_CONFIG_PATH} — applying widget values")
 
         if not using_saved:
             def b(v):
@@ -422,7 +423,7 @@ class CFZ_MIOpen_Settings:
             os.environ["PYTORCH_TUNABLEOP_HIPBLASLT_ENABLED"]    = b(pytorch_tunableop_hipblaslt_enabled)
             os.environ["MIOPEN_LOG_LEVEL"]                       = str(miopen_log_level)
             os.environ["MIOPEN_DEBUG_ENABLE"]                    = b(miopen_debug_enable)
-            print(
+            logging.info(
                 f"[CFZ MIOpen Settings] Applied: GEMM={gemm_backend}"
                 f" FindMode={miopen_find_mode} FindEnforce={miopen_find_enforce}"
                 f" LogLevel={miopen_log_level}"
@@ -436,7 +437,7 @@ class CFZ_MIOpen_Settings:
                 if val is not None:
                     cfg[var] = val
             _write_config(cfg)
-            print(f"[CFZ MIOpen Settings] Saved {len(cfg)} var(s) to {_CONFIG_PATH}")
+            logging.info(f"[CFZ MIOpen Settings] Saved {len(cfg)} var(s) to {_CONFIG_PATH}")
 
         info = self._build_info()
         print(info)
@@ -538,7 +539,7 @@ class CFZ_MIOpen_Solvers:
                 on += 1
             else:
                 off += 1
-        print(f"[CFZ MIOpen Solvers] {on} enabled, {off} disabled")
+        logging.info(f"[CFZ MIOpen Solvers] {on} enabled, {off} disabled")
         return (trigger,)
 
     @classmethod
@@ -594,16 +595,16 @@ class CFZ_MIOpen_Paths:
             "ROCBLAS_DEVICE_MEMORY_SIZE":       rocblas_device_memory_size,
         }
 
-        print("[CFZ MIOpen Paths]")
+        logging.info("[CFZ MIOpen Paths]")
         for var, raw in assignments.items():
             if raw.strip() == "":
-                print(f"  {var}: (skipped — empty)")
+                logging.info(f"  {var}: (skipped — empty)")
                 continue
             expanded = _expand_vars(raw.strip())
             os.environ[var] = expanded
             exists = Path(expanded).exists() if expanded else False
             status = "OK" if exists else "NOT FOUND"
-            print(f"  {var} = {expanded}  [{status}]")
+            logging.info(f"  {var} = {expanded}  [{status}]")
 
         return (trigger,)
 
@@ -741,7 +742,7 @@ class CFZ_MIOpen_DBInfo:
                 row("  " + fname, sz)
 
         output = "\n".join(lines)
-        print("[CFZ MIOpen DBInfo]" + output)
+        logging.info("[CFZ MIOpen DBInfo]" + output)
         return (output,)
 
     @classmethod
@@ -786,7 +787,7 @@ def _read_config() -> dict:
     try:
         return json.loads(_CONFIG_PATH.read_text(encoding="utf-8"))
     except Exception as e:
-        print(f"[CFZ MIOpen] Warning: could not read config {_CONFIG_PATH}: {e}")
+        logging.warning(f"[CFZ MIOpen] Warning: could not read config {_CONFIG_PATH}: {e}")
         return {}
 
 
@@ -822,6 +823,6 @@ def _apply_config(cfg: dict) -> int:
 _startup_cfg = _read_config()
 if _startup_cfg:
     _startup_count = _apply_config(_startup_cfg)
-    print(f"[CFZ MIOpen] Startup: applied {_startup_count} saved var(s) from {_CONFIG_PATH}")
+    logging.info(f"[CFZ MIOpen] Startup: applied {_startup_count} saved var(s) from {_CONFIG_PATH}")
 else:
-    print(f"[CFZ MIOpen] Startup: no saved config at {_CONFIG_PATH} — skipped")
+    logging.info(f"[CFZ MIOpen] Startup: no saved config at {_CONFIG_PATH} — skipped")
