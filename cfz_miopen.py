@@ -264,9 +264,13 @@ class CFZ_MIOpen_Settings:
                 f" FindMode={miopen_find_mode} FindEnforce={miopen_find_enforce}"
                 f" LogLevel={miopen_log_level}"
             )
+            # Always persist widget values so startup auto-apply works next run
+            cfg = {var: val for var in _MANAGED_VARS if (val := os.environ.get(var)) is not None}
+            _write_config(cfg)
+            logging.info(f"[CFZ MIOpen Settings] Auto-saved {len(cfg)} var(s) to {_CONFIG_PATH}")
 
-        # Save current env state to JSON if requested
-        if save_config_on_run:
+        # Save current env state to JSON if explicitly requested
+        elif save_config_on_run:
             cfg = {}
             for var in _MANAGED_VARS:
                 val = os.environ.get(var)
@@ -597,6 +601,121 @@ class CFZ_MIOpen_DBInfo:
         output = "\n".join(lines)
         logging.info("[CFZ MIOpen DBInfo]" + output)
         return (output,)
+
+    @classmethod
+    def IS_CHANGED(cls, **kwargs):
+        return float("NaN")
+
+
+# ---------------------------------------------------------------------------
+# CFZ_CuDNN — enable/disable cuDNN (MIOpen) and related flags at runtime
+# ---------------------------------------------------------------------------
+
+class CFZ_CuDNN:
+    """Enable or disable torch.backends.cudnn at runtime.
+
+    On ROCm, 'cuDNN' maps to MIOpen — disabling it forces PyTorch to use
+    its own fallback math kernels instead of MIOpen convolution solvers.
+    Changes take effect immediately for the current ComfyUI session."""
+
+    @classmethod
+    def INPUT_TYPES(cls):
+        try:
+            import torch
+            default_enabled       = torch.backends.cudnn.enabled
+            default_deterministic = torch.backends.cudnn.deterministic
+            default_allow_tf32    = torch.backends.cudnn.allow_tf32
+        except Exception:
+            default_enabled, default_deterministic, default_allow_tf32 = True, False, True
+        return {
+            "required": {
+                "cudnn_enabled":       ("BOOLEAN", {"default": default_enabled}),
+                "cudnn_deterministic": ("BOOLEAN", {"default": default_deterministic}),
+                "cudnn_allow_tf32":    ("BOOLEAN", {"default": default_allow_tf32}),
+            },
+            "optional": {
+                "trigger": (any_type, {}),
+            },
+        }
+
+    RETURN_TYPES = ("STRING", any_type)
+    RETURN_NAMES = ("info",    "output")
+    OUTPUT_NODE  = True
+    FUNCTION     = "run"
+    CATEGORY     = "CFZ Utils/MIOpen"
+
+    def run(self, cudnn_enabled, cudnn_deterministic, cudnn_allow_tf32, trigger=None):
+        try:
+            import torch
+            torch.backends.cudnn.enabled       = cudnn_enabled
+            torch.backends.cudnn.deterministic = cudnn_deterministic
+            torch.backends.cudnn.allow_tf32    = cudnn_allow_tf32
+            info = (
+                f"torch.backends.cudnn:\n"
+                f"  enabled       = {torch.backends.cudnn.enabled}\n"
+                f"  deterministic = {torch.backends.cudnn.deterministic}\n"
+                f"  allow_tf32    = {torch.backends.cudnn.allow_tf32}"
+            )
+        except Exception as e:
+            info = f"[CFZ CuDNN] Error: {e}"
+        logging.info(f"[CFZ CuDNN] {info}")
+        return (info, trigger)
+
+    @classmethod
+    def IS_CHANGED(cls, **kwargs):
+        return float("NaN")
+
+
+# ---------------------------------------------------------------------------
+# CFZ_CuDNN_Benchmark — control cudnn.benchmark and benchmark_limit
+# ---------------------------------------------------------------------------
+
+class CFZ_CuDNN_Benchmark:
+    """Control torch.backends.cudnn.benchmark at runtime.
+
+    When enabled, PyTorch (MIOpen on ROCm) benchmarks multiple convolution
+    algorithms on the first run and caches the fastest one per input shape.
+    benchmark_limit caps how many algorithm candidates are evaluated
+    (0 = unlimited)."""
+
+    @classmethod
+    def INPUT_TYPES(cls):
+        try:
+            import torch
+            default_benchmark       = torch.backends.cudnn.benchmark
+            default_benchmark_limit = torch.backends.cudnn.benchmark_limit
+        except Exception:
+            default_benchmark, default_benchmark_limit = False, 10
+        return {
+            "required": {
+                "benchmark":       ("BOOLEAN", {"default": default_benchmark}),
+                "benchmark_limit": ("INT",     {"default": default_benchmark_limit, "min": 0, "max": 100, "step": 1}),
+            },
+            "optional": {
+                "trigger": (any_type, {}),
+            },
+        }
+
+    RETURN_TYPES = ("STRING", any_type)
+    RETURN_NAMES = ("info",    "output")
+    OUTPUT_NODE  = True
+    FUNCTION     = "run"
+    CATEGORY     = "CFZ Utils/MIOpen"
+
+    def run(self, benchmark, benchmark_limit, trigger=None):
+        try:
+            import torch
+            torch.backends.cudnn.benchmark       = benchmark
+            torch.backends.cudnn.benchmark_limit = benchmark_limit
+            info = (
+                f"torch.backends.cudnn:\n"
+                f"  benchmark       = {torch.backends.cudnn.benchmark}\n"
+                f"  benchmark_limit = {torch.backends.cudnn.benchmark_limit}"
+            )
+        except Exception as e:
+            info = f"[CFZ CuDNN Benchmark] Error: {e}"
+        logging.info(f"[CFZ CuDNN Benchmark] {info}")
+        return (info, trigger)
 
     @classmethod
     def IS_CHANGED(cls, **kwargs):

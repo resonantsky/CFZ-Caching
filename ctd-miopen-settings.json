@@ -1,7 +1,7 @@
 {
   "id": "ctd-miopen-settings-v2-0000-000000000000",
   "revision": 1,
-  "last_node_id": 12,
+  "last_node_id": 14,
   "last_link_id": 0,
   "nodes": [
     {
@@ -21,10 +21,10 @@
       "inputs": [],
       "outputs": [],
       "properties": {
-        "text": "CTD’s MIOpen Settings\n\nRow 1: Paths — Settings (toggle save_config_on_run to persist, load_config_on_run to restore) — DB Info\nRow 2–3: Solver nodes are independent. Run all nodes once after loading the workflow to apply settings to the environment."
+        "text": "CTD's MIOpen Settings\n\nRow 1: Paths — Settings (toggle save_config_on_run to persist, load_config_on_run to restore) — DB Info\nRow 2–3: Solver nodes are independent. Run all nodes once after loading the workflow to apply settings to the environment.\nRow 4: CuDNN / backend toggles — enable/disable MIOpen and benchmark algorithm selection."
       },
       "widgets_values": [
-        "CTD’s MIOpen Settings\n\nRow 1: Paths — Settings (toggle save_config_on_run to persist, load_config_on_run to restore) — DB Info\nRow 2–3: Solver nodes are independent. Run all nodes once after loading the workflow to apply settings to the environment."
+        "CTD's MIOpen Settings\n\nRow 1: Paths — Settings (toggle save_config_on_run to persist, load_config_on_run to restore) — DB Info\nRow 2–3: Solver nodes are independent. Run all nodes once after loading the workflow to apply settings to the environment.\nRow 4: CuDNN / backend toggles — enable/disable MIOpen and benchmark algorithm selection."
       ]
     },
     {
@@ -435,6 +435,85 @@
         false,
         false
       ]
+    },
+    {
+      "id": 13,
+      "type": "CFZ_CuDNN",
+      "pos": [
+        0,
+        1140
+      ],
+      "size": [
+        340,
+        170
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "info",
+          "type": "STRING",
+          "links": [],
+          "slot_index": 0
+        },
+        {
+          "name": "output",
+          "type": "*",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "CTD's CuDNN Settings",
+      "properties": {
+        "aux_id": "patientx/CFZ-Caching",
+        "Node name for S&R": "CFZ_CuDNN"
+      },
+      "widgets_values": [
+        true,
+        false,
+        true
+      ]
+    },
+    {
+      "id": 14,
+      "type": "CFZ_CuDNN_Benchmark",
+      "pos": [
+        360,
+        1140
+      ],
+      "size": [
+        340,
+        130
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "info",
+          "type": "STRING",
+          "links": [],
+          "slot_index": 0
+        },
+        {
+          "name": "output",
+          "type": "*",
+          "links": [],
+          "slot_index": 1
+        }
+      ],
+      "title": "CTD's CuDNN Benchmark",
+      "properties": {
+        "aux_id": "patientx/CFZ-Caching",
+        "Node name for S&R": "CFZ_CuDNN_Benchmark"
+      },
+      "widgets_values": [
+        false,
+        10
+      ]
     }
   ],
   "links": [],
@@ -461,6 +540,18 @@
         760
       ],
       "color": "#59628e",
+      "font_size": 14
+    },
+    {
+      "id": 3,
+      "title": "CuDNN / Backend",
+      "bounding": [
+        -20,
+        1120,
+        760,
+        220
+      ],
+      "color": "#3d7a5e",
       "font_size": 14
     }
   ],
